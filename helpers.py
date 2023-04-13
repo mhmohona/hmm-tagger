@@ -98,8 +98,8 @@ def show_model(model, figsize=(5, 5), **kwargs):
 
 class Subset(namedtuple("BaseSet", "sentences keys vocab X tagset Y N stream")):
     def __new__(cls, sentences, keys):
-        word_sequences = tuple([sentences[k].words for k in keys])
-        tag_sequences = tuple([sentences[k].tags for k in keys])
+        word_sequences = tuple(sentences[k].words for k in keys)
+        tag_sequences = tuple(sentences[k].tags for k in keys)
         wordset = frozenset(chain(*word_sequences))
         tagset = frozenset(chain(*tag_sequences))
         N = sum(1 for _ in chain(*(sentences[k].words for k in keys)))
@@ -120,10 +120,10 @@ class Dataset(namedtuple("_Dataset", "sentences keys vocab X tagset Y training_s
         sentences = read_data(datafile)
         keys = tuple(sentences.keys())
         wordset = frozenset(chain(*[s.words for s in sentences.values()]))
-        word_sequences = tuple([sentences[k].words for k in keys])
-        tag_sequences = tuple([sentences[k].tags for k in keys])
+        word_sequences = tuple(sentences[k].words for k in keys)
+        tag_sequences = tuple(sentences[k].tags for k in keys)
         N = sum(1 for _ in chain(*(s.words for s in sentences.values())))
-        
+
         # split data into train/test sets
         _keys = list(keys)
         if seed is not None: random.seed(seed)
